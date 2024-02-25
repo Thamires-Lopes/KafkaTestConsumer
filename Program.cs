@@ -6,7 +6,7 @@ namespace KafkaTestConsumer
 {
     public class Program
     {
-        static async void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var host = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
             {
