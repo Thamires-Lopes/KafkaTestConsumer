@@ -33,9 +33,9 @@ namespace KafkaTestConsumer.Helpers
             }
         }
 
-        private static void CreateZip(User user, string caminhoZip)
+        private static void CreateZip(User user, string zipPath)
         {
-            using (var zip = new FileStream(caminhoZip, FileMode.Create))
+            using (var zip = new FileStream(zipPath, FileMode.Create))
             {
                 using (var archive = new ZipArchive(zip, ZipArchiveMode.Create))
                 {
@@ -49,9 +49,9 @@ namespace KafkaTestConsumer.Helpers
             }
         }
 
-        private static void UpdateZip(User user, string caminhoTempArchive, string caminhoZip)
+        private static void UpdateZip(User user, string tempArchivePath, string zipPath)
         {
-            using (var zip = new FileStream(caminhoZip, FileMode.Open))
+            using (var zip = new FileStream(zipPath, FileMode.Open))
             {
                 using (var archive = new ZipArchive(zip, ZipArchiveMode.Update))
                 {
@@ -59,7 +59,7 @@ namespace KafkaTestConsumer.Helpers
 
                     if (zipArchiveEntry != null)
                     {
-                        using (var tempFileStream = new FileStream(caminhoTempArchive, FileMode.Create))
+                        using (var tempFileStream = new FileStream(tempArchivePath, FileMode.Create))
                         {
                             using (var oldStream = zipArchiveEntry.Open())
                             {
@@ -67,7 +67,7 @@ namespace KafkaTestConsumer.Helpers
                             }
                         }
 
-                        using (var tempWriter = new StreamWriter(caminhoTempArchive, true))
+                        using (var tempWriter = new StreamWriter(tempArchivePath, true))
                         {
                             tempWriter.WriteLine($"User received - Name: {user.Name} | Id: {user.Id}");
                         }
@@ -77,7 +77,7 @@ namespace KafkaTestConsumer.Helpers
 
                     var newZipArchiveEntry = archive.CreateEntry(ARCHIVE_NAME);
 
-                    using (var fileStream = new FileStream(caminhoTempArchive, FileMode.Open))
+                    using (var fileStream = new FileStream(tempArchivePath, FileMode.Open))
                     {
                         using (var writer = newZipArchiveEntry.Open())
                         {
@@ -85,7 +85,7 @@ namespace KafkaTestConsumer.Helpers
                         }
                     }
 
-                    File.Delete(caminhoTempArchive);
+                    File.Delete(tempArchivePath);
                 }
             }
         }
