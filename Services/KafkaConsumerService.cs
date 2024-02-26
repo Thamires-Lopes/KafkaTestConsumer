@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using KafkaTestConsumer.Helpers;
 using KafkaTestConsumer.Models;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
@@ -36,7 +37,11 @@ namespace KafkaTestConsumer.Services
                     var result = _consumer.Consume(stoppingToken);
                     var user = JsonSerializer.Deserialize<User>(result.Message.Value);
 
-                    Console.WriteLine($"User received - Name: {user?.Name} | Id: {user?.Id}");
+                    if (user != null)
+                    {
+                        Console.WriteLine($"User received - Name: {user.Name} | Id: {user.Id}");
+                        ZipFileHelper.WriteFile(user);
+                    }
                 }, stoppingToken);
             }
         }
