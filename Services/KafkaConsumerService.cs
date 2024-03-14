@@ -1,5 +1,4 @@
 ﻿using Confluent.Kafka;
-using KafkaTestConsumer.Helpers;
 using KafkaTestConsumer.Models;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
@@ -39,8 +38,11 @@ namespace KafkaTestConsumer.Services
 
                     if (user != null)
                     {
-                        Console.WriteLine($"User received - Name: {user.Name} | Id: {user.Id}");
-                        ZipFileHelper.WriteFile(user);
+                        var text = $"User received - Name: {user.Name} | Id: {user.Id}";
+                        Console.WriteLine(text);
+                        //Probably I have done something wrong in the package configuration
+                        ZipFileHelper.ZipFileHelper.WriteFileWhithText(text);
+
                     }
                 }, stoppingToken);
             }
